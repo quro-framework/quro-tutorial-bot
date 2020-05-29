@@ -1,4 +1,4 @@
-import { Command, CommandRequest, ArgDef, ArgType } from 'quro'
+import { Command, CommandRequest, ArgDef, ArgType, PipeNext } from 'quro'
 
 export class ReverseCommand extends Command {
   name = 'reverse'
@@ -24,6 +24,13 @@ export class ReverseCommand extends Command {
     const reversed = args.input.split('').reverse().join('')
 
     return this.reply(reversed)
+  }
+
+  onPipe(request: CommandRequest, next: PipeNext) {
+    const args = this.getArgs(request)
+    const reversed = args.input.split('').reverse().join('')
+
+    return next.setAppendArgs([reversed])
   }
 
   /**

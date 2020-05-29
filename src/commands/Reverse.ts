@@ -20,17 +20,22 @@ export class ReverseCommand extends Command {
    * @param request
    */
   onHandle(request: CommandRequest) {
-    const args = this.getArgs(request)
-    const reversed = args.input.split('').reverse().join('')
+    const reversed = this.reverseArg(request)
 
     return this.reply(reversed)
   }
 
   onPipe(request: CommandRequest, next: PipeNext) {
+    const reversed = this.reverseArg(request)
+
+    return next.setAppendArgs([reversed])
+  }
+
+  private reverseArg(request: CommandRequest) {
     const args = this.getArgs(request)
     const reversed = args.input.split('').reverse().join('')
 
-    return next.setAppendArgs([reversed])
+    return reversed
   }
 
   /**
